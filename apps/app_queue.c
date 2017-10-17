@@ -4651,17 +4651,18 @@ static void rna(int rnatime, struct queue_ent *qe, struct ast_channel *peer, cha
 			ao2_unlock(qe->parent);
 		}
 		if (qe->parent->autopause == QUEUE_AUTOPAUSE_ON) {
-			if (!set_member_paused(qe->parent->name, interface, "Auto-Pause", 1)) {
-				ast_verb(3, "Auto-Pausing Queue Member %s in queue %s since they failed to answer.\n",
+			if (!set_member_paused(qe->parent->name, interface, "auto-away", 1)) {
+				ast_verb(3, "Automatically pausing queue member %s in queue %s because they failed to answer.\n",
 					interface, qe->parent->name);
+
 			} else {
 				ast_verb(3, "Failed to pause Queue Member %s in queue %s!\n", interface, qe->parent->name);
 			}
 		} else {
 			/* If queue autopause is mode all, just don't send any queue to stop.
 			* the function will stop in all queues */
-			if (!set_member_paused("", interface, "Auto-Pause", 1)) {
-				ast_verb(3, "Auto-Pausing Queue Member %s in all queues since they failed to answer on queue %s.\n",
+			if (!set_member_paused("", interface, "auto-away", 1)) {
+				ast_verb(3, "Automatically pausing queue member %s in all queues because they failed to answer on queue %s.\n",
 						interface, qe->parent->name);
 			} else {
 					ast_verb(3, "Failed to pause Queue Member %s in all queues!\n", interface);
