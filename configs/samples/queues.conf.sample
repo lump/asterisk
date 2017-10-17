@@ -51,7 +51,7 @@ monitor-type = MixMonitor
 ;
 ; Note that a timeout to fail out of a queue may be passed as part of
 ; an application call from extensions.conf:
-; Queue(queuename,[options],[optionalurl],[announceoverride],[timeout])
+; Queue(queuename,[options],[optionalurl],[override_gate_whisper],[timeout])
 ; example: Queue(dave,t,,,45)
 
 ; shared_lastcall will make the lastcall and calls received be the same in
@@ -82,13 +82,14 @@ monitor-type = MixMonitor
 ;
 ;musicclass = default
 ;
-; An announcement may be specified which is played for the member as
-; soon as they answer a call, typically to indicate to them which queue
-; this call should be answered as, so that agents or members who are
-; listening to more than one queue can differentiated how they should
-; engage the customer
+; A whisper may be specified which is played for the member as
+; they answer a call, and before they are connected to the caller.
+; Typically this would indicate to them which role they should perform
+; when answering the call.  In the case where members are assigned to 
+; multiple queues, this could be the queue name.  In the case where a
+; single queue is taking on multiple roles, this could be the gate name.
 ;
-;announce = queue-markq
+;gate_whisper = queue-markq
 ;
 ; A strategy may be specified.  Valid strategies include:
 ;
