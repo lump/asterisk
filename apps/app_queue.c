@@ -7212,6 +7212,13 @@ static void set_queue_member_pause(struct call_queue *q, struct member *mem, con
 	if (paused && !ast_strlen_zero(reason)) {
 		ast_copy_string(mem->reason_paused, reason, sizeof(mem->reason_paused));
 	} else {
+		time_t current_time;
+		time(&current_time);
+
+		/* reset lastcall for a wrapup grace-time after unpausing */
+		ast_debug(1, "resetting lastcall for %s because they were paused for %s.\n", mem->interface, mem->reason_paused);
+		mem->lastcall = current_time;
+
 		mem->reason_paused[0] = '\0';
 	}
 
