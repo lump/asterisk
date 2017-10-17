@@ -7211,6 +7211,11 @@ static void set_queue_member_pause(struct call_queue *q, struct member *mem, con
 	if (mem->paused == paused) {
 		ast_debug(1, "%spausing already-%spaused queue member %s:%s\n",
 			(paused ? "" : "un"), (paused ? "" : "un"), q->name, mem->interface);
+
+		// if we're already paused, log an UNPAUSE first
+		if (paused) {
+			ast_queue_log(q->name, "NONE", mem->membername, "UNPAUSE", "%s", "");
+		}
 	}
 
 	if (mem->realtime) {
@@ -7279,6 +7284,12 @@ static int set_member_paused(const char *queuename, const char *interface, const
 					 * XXX In all other cases, we use the queue name,
 					 * but since this affects all queues, we cannot.
 					 */
+
+					// if we're already paused and we're pausing again, log an UNPAUSEALL first
+					if (paused && mem->paused == paused) {
+						ast_queue_log("NONE", "NONE", mem->membername, "UNPAUSEALL", "%s", "");
+					}
+
 					ast_queue_log("NONE", "NONE", mem->membername,
 						(paused ? "PAUSEALL" : "UNPAUSEALL"), "%s", S_OR(reason, ""));
 				}
